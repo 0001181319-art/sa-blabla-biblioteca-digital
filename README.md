@@ -193,6 +193,4 @@ biblioteca/
 
 ---
 
-## 👤 Autor
 
-Desenvolvido como projeto de portfólio para processo seletivo Django Fullstack.
