@@ -1,0 +1,21 @@
+{% extends 'livros/base.html' %}
+{% block title %}Confirmar exclusão — Biblioteca Digital{% endblock %}
+{% block page_title %}Confirmar Exclusão{% endblock %}
+
+{% block content %}
+<div class="confirm-box">
+  <div class="confirm-icon">⚠️</div>
+  <h2>Excluir {{ tipo }}</h2>
+  <p>
+    Tem certeza que deseja excluir <strong>{{ objeto }}</strong>?<br>
+    Esta ação <strong>não pode ser desfeita</strong>.
+  </p>
+  <div class="confirm-actions">
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Sim, excluir</button>
+    </form>
+    <a href="{% url cancel_url %}" class="btn btn-secondary">Cancelar</a>
+  </div>
+</div>
+{% endblock %}

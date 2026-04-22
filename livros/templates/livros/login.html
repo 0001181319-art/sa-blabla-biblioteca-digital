@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Biblioteca Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0e0c;
+      --bg2: #181714;
+      --bg3: #211f1b;
+      --card: #1c1a17;
+      --border: #2e2b25;
+      --gold: #c9a84c;
+      --gold-light: #e4c87a;
+      --gold-dim: rgba(201,168,76,0.12);
+      --text: #e8e2d6;
+      --text-muted: #8a8070;
+      --text-dim: #5a5245;
+      --red: #e05555;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* Left panel */
+    .panel-left {
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 64px;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel-left::before {
+      content: '📚';
+      font-size: 20rem;
+      position: absolute;
+      right: -60px; bottom: -40px;
+      opacity: 0.04;
+      line-height: 1;
+    }
+    .brand-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-tag::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
+    .panel-left h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      line-height: 1.15;
+      color: var(--text);
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .panel-left h2 em { color: var(--gold); font-style: italic; }
+    .panel-left p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      max-width: 360px;
+      margin-bottom: 40px;
+    }
+    .features { display: flex; flex-direction: column; gap: 12px; }
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .feature-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); opacity: 0.7; flex-shrink: 0; }
+
+    /* Right panel */
+    .panel-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 64px 48px;
+    }
+    .login-box { width: 100%; max-width: 380px; }
+    .login-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      margin-bottom: 6px;
+    }
+    .login-box .sub {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 32px;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    label { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+    .form-input {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: inherit;
+      transition: border-color 0.15s;
+      width: 100%;
+    }
+    .form-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-dim); }
+    .field-error { font-size: 0.75rem; color: var(--red); }
+    .non-field-errors {
+      background: rgba(224,85,85,0.1);
+      border: 1px solid rgba(224,85,85,0.3);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: var(--red);
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+    }
+    .btn-login {
+      width: 100%;
+      padding: 13px;
+      background: var(--gold);
+      color: #1a1600;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.15s;
+      letter-spacing: 0.02em;
+    }
+    .btn-login:hover { background: var(--gold-light); }
+    .login-footer {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      body { grid-template-columns: 1fr; }
+      .panel-left { display: none; }
+      .panel-right { padding: 48px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="panel-left">
+    <div class="brand-tag">Sistema de Acervo</div>
+    <h2>Sua <em>Biblioteca</em><br>Digital</h2>
+    <p>Gerencie seu acervo literário com elegância. Cadastre livros, autores e categorias com total controle e acesso simplificado.</p>
+    <div class="features">
+      <div class="feature"><span class="feature-dot"></span> Cadastro completo de livros e autores</div>
+      <div class="feature"><span class="feature-dot"></span> Controle de disponibilidade do acervo</div>
+      <div class="feature"><span class="feature-dot"></span> API REST para integração externa</div>
+      <div class="feature"><span class="feature-dot"></span> Interface responsiva e intuitiva</div>
+    </div>
+  </div>
+
+  <div class="panel-right">
+    <div class="login-box">
+      <h3>Entrar no sistema</h3>
+      <p class="sub">Informe suas credenciais para continuar</p>
+
+      {% if form.non_field_errors %}
+      <div class="non-field-errors">
+        {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+      </div>
+      {% endif %}
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+          {{ form.username }}
+          {% if form.username.errors %}
+            {% for error in form.username.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+          {% endif %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+          {{ form.password }}
+          {% if form.password.errors %}
+            {% for error in form.password.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+          {% endif %}
+        </div>
+        <button type="submit" class="btn-login">Entrar →</button>
+      </form>
+
+      <div class="login-footer">
+        Biblioteca Digital &mdash; Sistema de Portfólio Django
+      </div>
+    </div>
+  </div>
+</body>
+</html>

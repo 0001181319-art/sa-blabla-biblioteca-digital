@@ -1,0 +1,60 @@
+{% extends 'livros/base.html' %}
+{% block title %}Categorias — Biblioteca Digital{% endblock %}
+{% block page_title %}Categorias{% endblock %}
+{% block page_subtitle %}Gerenciamento de categorias{% endblock %}
+
+{% block content %}
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+  <span style="color:var(--text-muted);font-size:0.85rem">{{ categorias.count }} categoria{{ categorias.count|pluralize:"s" }}</span>
+  <a href="{% url 'categoria_create' %}" class="btn btn-primary">+ Nova Categoria</a>
+</div>
+
+<div class="search-bar">
+  <form method="get" style="display:contents">
+    <div class="form-group" style="flex:1">
+      <label>Buscar</label>
+      <input type="text" name="q" value="{{ q }}" class="form-input" placeholder="Nome da categoria...">
+    </div>
+    <div style="align-self:flex-end;display:flex;gap:8px">
+      <button type="submit" class="btn btn-primary">Buscar</button>
+      {% if q %}<a href="{% url 'categoria_list' %}" class="btn btn-secondary">Limpar</a>{% endif %}
+    </div>
+  </form>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Descrição</th>
+        <th>Livros</th>
+        <th>Criada em</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for categoria in categorias %}
+      <tr>
+        <td><strong>{{ categoria.nome }}</strong></td>
+        <td style="color:var(--text-muted);font-size:0.85rem">{{ categoria.descricao|default:"—"|truncatechars:60 }}</td>
+        <td><span class="badge badge-blue">{{ categoria.qtd_livros }} livro{{ categoria.qtd_livros|pluralize }}</span></td>
+        <td style="font-size:0.8rem;color:var(--text-muted)">{{ categoria.criado_em|date:"d/m/Y" }}</td>
+        <td>
+          <div style="display:flex;gap:6px">
+            <a href="{% url 'categoria_update' categoria.pk %}" class="btn btn-secondary btn-sm">Editar</a>
+            <a href="{% url 'categoria_delete' categoria.pk %}" class="btn btn-danger btn-sm">Excluir</a>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" class="empty-row">
+        <div style="font-size:2rem;margin-bottom:8px">🏷️</div>
+        Nenhuma categoria cadastrada.
+        <br><a href="{% url 'categoria_create' %}" style="color:var(--gold)">Criar a primeira categoria</a>
+      </td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

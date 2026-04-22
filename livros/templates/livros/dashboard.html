@@ -1,0 +1,88 @@
+{% extends 'livros/base.html' %}
+{% block title %}Dashboard — Biblioteca Digital{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}Visão geral do acervo{% endblock %}
+
+{% block content %}
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-label">Total de Livros</div>
+    <div class="stat-value">{{ stats.total_livros }}</div>
+    <div class="stat-icon">📖</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Disponíveis</div>
+    <div class="stat-value" style="color:var(--green)">{{ stats.disponiveis }}</div>
+    <div class="stat-icon">✓</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Emprestados</div>
+    <div class="stat-value" style="color:var(--red)">{{ stats.emprestados }}</div>
+    <div class="stat-icon">↗</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Reservados</div>
+    <div class="stat-value" style="color:var(--amber)">{{ stats.reservados }}</div>
+    <div class="stat-icon">🔖</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Autores</div>
+    <div class="stat-value">{{ stats.total_autores }}</div>
+    <div class="stat-icon">✍️</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Categorias</div>
+    <div class="stat-value">{{ stats.total_categorias }}</div>
+    <div class="stat-icon">🏷️</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">Últimas Adições ao Acervo</span>
+    <a href="{% url 'livro_create' %}" class="btn btn-primary btn-sm">+ Novo Livro</a>
+  </div>
+  {% if livros_recentes %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Autor</th>
+          <th>Categoria</th>
+          <th>Status</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for livro in livros_recentes %}
+        <tr>
+          <td><strong>{{ livro.titulo }}</strong></td>
+          <td>{{ livro.autor.nome }}</td>
+          <td>
+            {% if livro.categoria %}
+              <span class="badge badge-blue">{{ livro.categoria.nome }}</span>
+            {% else %}<span style="color:var(--text-dim)">—</span>{% endif %}
+          </td>
+          <td>
+            {% if livro.status == 'disponivel' %}<span class="badge badge-green">Disponível</span>
+            {% elif livro.status == 'emprestado' %}<span class="badge badge-red">Emprestado</span>
+            {% else %}<span class="badge badge-amber">Reservado</span>{% endif %}
+          </td>
+          <td>
+            <a href="{% url 'livro_detail' livro.pk %}" class="btn btn-secondary btn-sm">Ver</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div style="text-align:center;padding:48px;color:var(--text-muted)">
+    <div style="font-size:3rem;margin-bottom:12px">📚</div>
+    <p>Nenhum livro cadastrado ainda.</p>
+    <a href="{% url 'livro_create' %}" class="btn btn-primary" style="margin-top:16px">Cadastrar primeiro livro</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'livros/base.html' %}
+{% block title %}Autores — Biblioteca Digital{% endblock %}
+{% block page_title %}Autores{% endblock %}
+{% block page_subtitle %}Gerenciamento de autores{% endblock %}
+
+{% block content %}
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+  <span style="color:var(--text-muted);font-size:0.85rem">{{ autores.count }} autor{{ autores.count|pluralize:"es" }} encontrado{{ autores.count|pluralize:"s" }}</span>
+  <a href="{% url 'autor_create' %}" class="btn btn-primary">+ Novo Autor</a>
+</div>
+
+<div class="search-bar">
+  <form method="get" style="display:contents">
+    <div class="form-group" style="flex:1">
+      <label>Buscar</label>
+      <input type="text" name="q" value="{{ q }}" class="form-input" placeholder="Nome ou nacionalidade...">
+    </div>
+    <div style="align-self:flex-end;display:flex;gap:8px">
+      <button type="submit" class="btn btn-primary">Buscar</button>
+      {% if q %}<a href="{% url 'autor_list' %}" class="btn btn-secondary">Limpar</a>{% endif %}
+    </div>
+  </form>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Nacionalidade</th>
+        <th>Livros no Acervo</th>
+        <th>Cadastrado em</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for autor in autores %}
+      <tr>
+        <td><strong>{{ autor.nome }}</strong></td>
+        <td>{{ autor.nacionalidade }}</td>
+        <td>
+          <span class="badge badge-blue">{{ autor.qtd_livros }} livro{{ autor.qtd_livros|pluralize }}</span>
+        </td>
+        <td style="font-size:0.8rem;color:var(--text-muted)">{{ autor.criado_em|date:"d/m/Y" }}</td>
+        <td>
+          <div style="display:flex;gap:6px">
+            <a href="{% url 'autor_update' autor.pk %}" class="btn btn-secondary btn-sm">Editar</a>
+            <a href="{% url 'autor_delete' autor.pk %}" class="btn btn-danger btn-sm">Excluir</a>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" class="empty-row">
+        <div style="font-size:2rem;margin-bottom:8px">✍️</div>
+        Nenhum autor cadastrado.
+        <br><a href="{% url 'autor_create' %}" style="color:var(--gold)">Cadastrar o primeiro autor</a>
+      </td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

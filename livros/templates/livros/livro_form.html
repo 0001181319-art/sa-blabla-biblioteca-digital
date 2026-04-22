@@ -1,0 +1,62 @@
+{% extends 'livros/base.html' %}
+{% block title %}{{ titulo }} — Biblioteca Digital{% endblock %}
+{% block page_title %}{{ titulo }}{% endblock %}
+{% block page_subtitle %}Preencha os dados do livro{% endblock %}
+
+{% block content %}
+<div style="max-width:760px">
+  <a href="{% url 'livro_list' %}" class="btn btn-secondary" style="margin-bottom:20px">← Voltar</a>
+
+  <div class="card">
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="form-grid">
+        <div class="form-group full">
+          <label for="{{ form.titulo.id_for_label }}">Título *</label>
+          {{ form.titulo }}
+          {% for error in form.titulo.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.autor.id_for_label }}">Autor *</label>
+          {{ form.autor }}
+          {% for error in form.autor.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.categoria.id_for_label }}">Categoria</label>
+          {{ form.categoria }}
+          {% for error in form.categoria.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.isbn.id_for_label }}">ISBN *</label>
+          {{ form.isbn }}
+          {% for error in form.isbn.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.ano_publicacao.id_for_label }}">Ano de Publicação *</label>
+          {{ form.ano_publicacao }}
+          {% for error in form.ano_publicacao.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.paginas.id_for_label }}">Número de Páginas *</label>
+          {{ form.paginas }}
+          {% for error in form.paginas.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.status.id_for_label }}">Status *</label>
+          {{ form.status }}
+          {% for error in form.status.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+        </div>
+        <div class="form-group full">
+          <label for="{{ form.sinopse.id_for_label }}">Sinopse</label>
+          {{ form.sinopse }}
+          {% for error in form.sinopse.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">{{ action }}</button>
+        <a href="{% url 'livro_list' %}" class="btn btn-secondary">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'livros/base.html' %}
+{% block title %}{{ titulo }} — Biblioteca Digital{% endblock %}
+{% block page_title %}{{ titulo }}{% endblock %}
+{% block page_subtitle %}Dados da categoria{% endblock %}
+
+{% block content %}
+<div style="max-width:560px">
+  <a href="{% url 'categoria_list' %}" class="btn btn-secondary" style="margin-bottom:20px">← Voltar</a>
+  <div class="card">
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="form-grid">
+        <div class="form-group full">
+          <label for="{{ form.nome.id_for_label }}">Nome *</label>
+          {{ form.nome }}
+          {% for error in form.nome.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+        </div>
+        <div class="form-group full">
+          <label for="{{ form.descricao.id_for_label }}">Descrição</label>
+          {{ form.descricao }}
+          {% for error in form.descricao.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">{{ action }}</button>
+        <a href="{% url 'categoria_list' %}" class="btn btn-secondary">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'livros/base.html' %}
+{% block title %}Livros — Biblioteca Digital{% endblock %}
+{% block page_title %}Livros{% endblock %}
+{% block page_subtitle %}Gerenciamento do acervo{% endblock %}
+
+{% block content %}
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+  <span style="color:var(--text-muted);font-size:0.85rem">{{ livros.count }} livro{{ livros.count|pluralize }} encontrado{{ livros.count|pluralize }}</span>
+  <a href="{% url 'livro_create' %}" class="btn btn-primary">+ Novo Livro</a>
+</div>
+
+<div class="search-bar">
+  <form method="get" style="display:contents">
+    <div class="form-group" style="flex:2">
+      <label>Buscar</label>
+      <input type="text" name="q" value="{{ q }}" class="form-input" placeholder="Título, autor ou ISBN...">
+    </div>
+    <div class="form-group">
+      <label>Status</label>
+      <select name="status" class="form-select">
+        <option value="">Todos</option>
+        {% for val, label in status_choices %}
+          <option value="{{ val }}" {% if status_filter == val %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Categoria</label>
+      <select name="categoria" class="form-select">
+        <option value="">Todas</option>
+        {% for cat in categorias %}
+          <option value="{{ cat.pk }}" {% if categoria_filter == cat.pk|stringformat:"s" %}selected{% endif %}>{{ cat.nome }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div style="align-self:flex-end;display:flex;gap:8px">
+      <button type="submit" class="btn btn-primary">Buscar</button>
+      {% if q or status_filter or categoria_filter %}
+        <a href="{% url 'livro_list' %}" class="btn btn-secondary">Limpar</a>
+      {% endif %}
+    </div>
+  </form>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Autor</th>
+        <th>Categoria</th>
+        <th>ISBN</th>
+        <th>Ano</th>
+        <th>Páginas</th>
+        <th>Status</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for livro in livros %}
+      <tr>
+        <td><a href="{% url 'livro_detail' livro.pk %}" style="color:var(--gold);text-decoration:none;font-weight:500">{{ livro.titulo }}</a></td>
+        <td>{{ livro.autor.nome }}</td>
+        <td>{% if livro.categoria %}<span class="badge badge-blue">{{ livro.categoria.nome }}</span>{% else %}<span style="color:var(--text-dim)">—</span>{% endif %}</td>
+        <td style="font-family:monospace;font-size:0.8rem;color:var(--text-muted)">{{ livro.isbn }}</td>
+        <td>{{ livro.ano_publicacao }}</td>
+        <td>{{ livro.paginas }}</td>
+        <td>
+          {% if livro.status == 'disponivel' %}<span class="badge badge-green">Disponível</span>
+          {% elif livro.status == 'emprestado' %}<span class="badge badge-red">Emprestado</span>
+          {% else %}<span class="badge badge-amber">Reservado</span>{% endif %}
+        </td>
+        <td>
+          <div style="display:flex;gap:6px">
+            <a href="{% url 'livro_detail' livro.pk %}" class="btn btn-secondary btn-sm">Ver</a>
+            <a href="{% url 'livro_update' livro.pk %}" class="btn btn-secondary btn-sm">Editar</a>
+            <a href="{% url 'livro_delete' livro.pk %}" class="btn btn-danger btn-sm">Excluir</a>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="8" class="empty-row">
+        <div style="font-size:2rem;margin-bottom:8px">📭</div>
+        Nenhum livro encontrado.
+        {% if not q and not status_filter %}
+          <br><a href="{% url 'livro_create' %}" style="color:var(--gold)">Cadastrar o primeiro livro</a>
+        {% endif %}
+      </td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

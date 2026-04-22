@@ -1,0 +1,73 @@
+{% extends 'livros/base.html' %}
+{% block title %}{{ livro.titulo }} — Biblioteca Digital{% endblock %}
+{% block page_title %}Detalhes do Livro{% endblock %}
+{% block page_subtitle %}{{ livro.titulo }}{% endblock %}
+
+{% block content %}
+<div style="display:flex;gap:8px;margin-bottom:20px">
+  <a href="{% url 'livro_list' %}" class="btn btn-secondary">← Voltar</a>
+  <a href="{% url 'livro_update' livro.pk %}" class="btn btn-secondary">Editar</a>
+  <a href="{% url 'livro_delete' livro.pk %}" class="btn btn-danger">Excluir</a>
+</div>
+
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+    <div>
+      <div style="font-size:0.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:4px">Título</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--text);margin-bottom:20px">{{ livro.titulo }}</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <div style="font-size:0.72rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Autor</div>
+          <div style="color:var(--gold)">{{ livro.autor.nome }}</div>
+        </div>
+        <div>
+          <div style="font-size:0.72rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Categoria</div>
+          <div>{% if livro.categoria %}<span class="badge badge-blue">{{ livro.categoria.nome }}</span>{% else %}<span style="color:var(--text-dim)">Sem categoria</span>{% endif %}</div>
+        </div>
+        <div>
+          <div style="font-size:0.72rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">ISBN</div>
+          <div style="font-family:monospace;color:var(--text-muted)">{{ livro.isbn }}</div>
+        </div>
+        <div>
+          <div style="font-size:0.72rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Ano de Publicação</div>
+          <div>{{ livro.ano_publicacao }}</div>
+        </div>
+        <div>
+          <div style="font-size:0.72rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Páginas</div>
+          <div>{{ livro.paginas }}</div>
+        </div>
+        <div>
+          <div style="font-size:0.72rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Status</div>
+          <div>
+            {% if livro.status == 'disponivel' %}<span class="badge badge-green">Disponível</span>
+            {% elif livro.status == 'emprestado' %}<span class="badge badge-red">Emprestado</span>
+            {% else %}<span class="badge badge-amber">Reservado</span>{% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size:0.72rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Sinopse</div>
+      <div style="color:var(--text-muted);line-height:1.7;font-size:0.9rem">
+        {{ livro.sinopse|default:"Nenhuma sinopse cadastrada." }}
+      </div>
+
+      <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border)">
+        <div style="font-size:0.72rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Sobre o Autor</div>
+        <div style="font-weight:500;color:var(--text);margin-bottom:4px">{{ livro.autor.nome }}</div>
+        <div style="font-size:0.8rem;color:var(--text-dim);margin-bottom:8px">{{ livro.autor.nacionalidade }}</div>
+        <div style="color:var(--text-muted);line-height:1.7;font-size:0.85rem">
+          {{ livro.autor.biografia|default:"Nenhuma biografia disponível." }}
+        </div>
+      </div>
+
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);font-size:0.75rem;color:var(--text-dim)">
+        <div>Cadastrado em: {{ livro.criado_em|date:"d/m/Y H:i" }}</div>
+        <div>Última atualização: {{ livro.atualizado_em|date:"d/m/Y H:i" }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
